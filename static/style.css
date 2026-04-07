@@ -322,6 +322,12 @@ main {
     border: 1px solid #e8c9c4;
 }
 
+.flash.warning {
+    background: #fdf6e8;
+    color: #946b2d;
+    border: 1px solid #eedcb1;
+}
+
 .flash.success {
     background: #ecf4ed;
     color: var(--success-green);
@@ -526,6 +532,42 @@ main {
     font-weight: 500;
     color: var(--charcoal-warm);
     letter-spacing: -0.32px;
+}
+
+/* ========== Elapsed & Comparison Badges ========== */
+.elapsed-badge {
+    background: var(--white);
+    color: var(--near-black);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-warm);
+}
+
+.comparison-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+.comparison-badge.new-best {
+    background: #ecf4ed;
+    color: var(--success-green);
+}
+
+.comparison-badge.tied {
+    background: var(--parchment);
+    color: var(--olive-gray);
+}
+
+.comparison-badge.worse {
+    background: #fdf6e8;
+    color: #946b2d;
 }
 
 /* ========== Samples Display ========== */

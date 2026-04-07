@@ -210,12 +210,28 @@ def execute():
     else:
         samples = random_select_samples(m, n)
 
-    # Run algorithm
-    groups = compute_optimal_groups(samples, k, j, s)
+    # Run algorithm with timeout
+    groups, elapsed_ms, timed_out = compute_optimal_groups(samples, k, j, s, timeout=30)
     num_groups = len(groups)
 
     # Format groups for display
     groups_list = [list(g) for g in groups]
+
+    if timed_out:
+        flash("算法超时，返回当前最优解。" if zh else "Algorithm timed out, returning current best solution.", "warning")
+
+    # Look up historical best for same parameters
+    user = session.get("user")
+    historical_best = None
+    if user and not user.get("is_guest"):
+        conn = get_db()
+        row = conn.execute(
+            "SELECT MIN(num_groups) FROM results WHERE m=? AND n=? AND k=? AND j=? AND s=? AND user_id=?",
+            (m, n, k, j, s, user["id"])
+        ).fetchone()
+        conn.close()
+        if row and row[0] is not None:
+            historical_best = row[0]
 
     return render_template(
         "results.html",
@@ -225,6 +241,9 @@ def execute():
         num_groups=num_groups,
         groups_json=json.dumps(groups_list),
         samples_json=json.dumps(samples),
+        elapsed_ms=elapsed_ms,
+        timed_out=timed_out,
+        historical_best=historical_best,
     )
 
 

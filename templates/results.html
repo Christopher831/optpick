@@ -12,7 +12,14 @@
         <span>k = {{ k }}</span>
         <span>j = {{ j }}</span>
         <span>s = {{ s }}</span>
+        {% if elapsed_ms is defined and elapsed_ms is not none %}
+        <span class="elapsed-badge" data-i18n="elapsed-time" data-i18n-ms="{{ elapsed_ms }}">Elapsed: {{ elapsed_ms }}ms</span>
+        {% endif %}
     </div>
+
+    {% if timed_out %}
+    <div class="flash warning" data-i18n="timeout-warning">Algorithm timed out, returning current best solution.</div>
+    {% endif %}
 
     <div class="samples-display">
         <h3 data-i18n="selected-samples" data-i18n-n="{{ n }}">Selected {{ n }} samples</h3>
@@ -24,7 +31,18 @@
     </div>
 
     <div class="results-display">
-        <h3 data-i18n="optimal-groups" data-i18n-num="{{ num_groups }}" data-i18n-k="{{ k }}">{{ num_groups }} optimal groups of {{ k }}</h3>
+        <h3>
+            <span data-i18n="optimal-groups" data-i18n-num="{{ num_groups }}" data-i18n-k="{{ k }}">{{ num_groups }} optimal groups of {{ k }}</span>
+            {% if historical_best is defined and historical_best is not none %}
+                {% if num_groups < historical_best %}
+                <span class="comparison-badge new-best" data-i18n="new-best">New best!</span>
+                {% elif num_groups == historical_best %}
+                <span class="comparison-badge tied" data-i18n="tied-best" data-i18n-best="{{ historical_best }}">Tied with best ({{ historical_best }})</span>
+                {% else %}
+                <span class="comparison-badge worse" data-i18n="vs-best" data-i18n-best="{{ historical_best }}">Best: {{ historical_best }}</span>
+                {% endif %}
+            {% endif %}
+        </h3>
         <div class="groups-table">
             <table>
                 <thead>

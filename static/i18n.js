@@ -40,7 +40,12 @@ const TRANSLATIONS = {
     "btn-logout": "Logout",
     "btn-signin": "Sign in",
     "guest-label": "Guest",
-    "login-required": "Please log in to save results."
+    "login-required": "Please log in to save results.",
+    "elapsed-time": "Elapsed: {ms}ms",
+    "timeout-warning": "Algorithm timed out, returning current best solution.",
+    "new-best": "New best!",
+    "tied-best": "Tied with best ({best})",
+    "vs-best": "Best: {best}"
   },
   zh: {
     "site-title": "最优样本选择系统",
@@ -83,7 +88,12 @@ const TRANSLATIONS = {
     "btn-logout": "退出登录",
     "btn-signin": "登录",
     "guest-label": "访客",
-    "login-required": "请登录后保存结果。"
+    "login-required": "请登录后保存结果。",
+    "elapsed-time": "耗时：{ms}ms",
+    "timeout-warning": "算法超时，返回当前最优解。",
+    "new-best": "新纪录！",
+    "tied-best": "与最优持平（{best}）",
+    "vs-best": "历史最优：{best}"
   }
 };
 
@@ -98,6 +108,8 @@ function setLang(lang) {
     if (el.dataset.i18nN) text = text.replace("{n}", el.dataset.i18nN);
     if (el.dataset.i18nNum) text = text.replace("{num}", el.dataset.i18nNum);
     if (el.dataset.i18nK) text = text.replace("{k}", el.dataset.i18nK);
+    if (el.dataset.i18nMs) text = text.replace("{ms}", el.dataset.i18nMs);
+    if (el.dataset.i18nBest) text = text.replace("{best}", el.dataset.i18nBest);
     if (text.includes("<a ")) {
       el.innerHTML = text;
     } else {
