@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2>
+        <span data-i18n="results-title">Results</span>
+        {% if from_db %}<span class="label-tag">{{ label }}</span>{% endif %}
+    </h2>
+
+    <div class="info-bar">
+        <span>m = {{ m }}</span>
+        <span>n = {{ n }}</span>
+        <span>k = {{ k }}</span>
+        <span>j = {{ j }}</span>
+        <span>s = {{ s }}</span>
+    </div>
+
+    <div class="samples-display">
+        <h3 data-i18n="selected-samples" data-i18n-n="{{ n }}">Selected {{ n }} samples</h3>
+        <div class="sample-numbers">
+            {% for val in samples %}
+            <span class="sample-num">{{ val }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="results-display">
+        <h3 data-i18n="optimal-groups" data-i18n-num="{{ num_groups }}" data-i18n-k="{{ k }}">{{ num_groups }} optimal groups of {{ k }}</h3>
+        <div class="groups-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th data-i18n="th-index">#</th>
+                        <th data-i18n="th-group-members">Group members</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                    <tr>
+                        <td class="group-num">{{ loop.index }}</td>
+                        <td>
+                            {% for val in group %}
+                            <span class="sample-num">{{ val }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="actions">
+        {% if not from_db %}
+        {% if current_user and not current_user.is_guest %}
+        <form action="{{ url_for('store') }}" method="post" style="display:inline;" onsubmit="this.querySelector('[name=lang]').value=localStorage.getItem('lang')||'en'">
+            <input type="hidden" name="lang" value="en">
+            <input type="hidden" name="m" value="{{ m }}">
+            <input type="hidden" name="n" value="{{ n }}">
+            <input type="hidden" name="k" value="{{ k }}">
+            <input type="hidden" name="j" value="{{ j }}">
+            <input type="hidden" name="s" value="{{ s }}">
+            <input type="hidden" name="samples_json" value='{{ samples_json }}'>
+            <input type="hidden" name="groups_json" value='{{ groups_json }}'>
+            <button type="submit" class="btn btn-primary" data-i18n="btn-store">Store to Database</button>
+        </form>
+        {% else %}
+        <button type="button" class="btn btn-primary" data-i18n="btn-store" onclick="showLoginPrompt()">Store to Database</button>
+        {% endif %}
+        {% endif %}
+        <a href="{{ url_for('app_index') }}" class="btn btn-secondary" data-i18n="btn-back">Back</a>
+        <button onclick="window.print()" class="btn btn-secondary" data-i18n="btn-print">Print</button>
+    </div>
+</div>
+
+<!-- Login prompt modal for guests -->
+{% if current_user and current_user.is_guest %}
+<div id="loginModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)this.style.display='none'">
+    <div class="modal-box">
+        <p data-i18n="login-required">Please log in to save results.</p>
+        <div class="modal-actions">
+            <a href="{{ url_for('auth_login') }}" class="btn btn-primary" data-i18n="btn-google-login">Sign in with Google</a>
+            <button onclick="document.getElementById('loginModal').style.display='none'" class="btn btn-secondary" data-i18n="btn-cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+<script>
+function showLoginPrompt() {
+    document.getElementById('loginModal').style.display = 'flex';
+}
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2 data-i18n="db-title">Database Resources</h2>
+
+    {% if records %}
+    <div class="db-list">
+        <table>
+            <thead>
+                <tr>
+                    <th data-i18n="th-label">Label</th>
+                    <th data-i18n="th-params">Parameters</th>
+                    <th data-i18n="th-groups">Groups</th>
+                    <th data-i18n="th-created">Created</th>
+                    <th data-i18n="th-actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in records %}
+                <tr>
+                    <td class="label-cell">{{ r.label }}</td>
+                    <td>m={{ r.m }}, n={{ r.n }}, k={{ r.k }}, j={{ r.j }}, s={{ r.s }}</td>
+                    <td>{{ r.num_groups }}</td>
+                    <td>{{ r.created_at }}</td>
+                    <td class="action-cell">
+                        <a href="{{ url_for('view_record', record_id=r.id) }}" class="btn btn-sm btn-primary" data-i18n="btn-display">Display</a>
+                        <form action="{{ url_for('delete_record', record_id=r.id) }}" method="post" style="display:inline;"
+                              data-i18n-confirm="delete-confirm" onsubmit="this.querySelector('[name=lang]').value=localStorage.getItem('lang')||'en'; return confirm(localStorage.getItem('lang')==='zh'?'确定删除此记录？':'Delete this record?')">
+                            <input type="hidden" name="lang" value="en">
+                            <button type="submit" class="btn btn-sm btn-danger" data-i18n="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-msg" data-i18n="empty-msg">No records yet. Go to <a href="{{ url_for('index') }}">Home</a> to run the algorithm and store results.</p>
+    {% endif %}
+
+    <div class="actions">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary" data-i18n="btn-back">Back</a>
+    </div>
+</div>
+{% endblock %}

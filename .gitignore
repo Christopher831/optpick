@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.db
+.secret_key
+.DS_Store
+start.sh
