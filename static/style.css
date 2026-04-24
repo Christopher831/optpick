@@ -380,6 +380,43 @@ main {
     letter-spacing: 0.12px;
 }
 
+/* ========== Demo Runs ========== */
+.demo-section {
+    margin-bottom: 2rem;
+    padding: 1rem 1.2rem;
+    background: var(--ivory);
+    border: 1px solid var(--border-warm);
+    border-radius: 12px;
+}
+
+.demo-section h3 {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.20;
+    margin-bottom: 0.8rem;
+    color: var(--near-black);
+}
+
+.demo-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+}
+
+.btn-demo {
+    background: var(--white);
+    color: var(--charcoal-warm);
+    box-shadow: var(--white) 0px 0px 0px 0px, var(--ring-warm) 0px 0px 0px 1px;
+    font-size: 0.85rem;
+    line-height: 1.25;
+    padding: 9px 12px;
+}
+
+.btn-demo:hover {
+    background: var(--parchment);
+}
+
 /* ========== Mode Section ========== */
 .mode-section {
     margin-bottom: 2rem;
@@ -466,6 +503,11 @@ main {
     text-align: center;
     transition: all 0.15s ease;
     line-height: 1.0;
+}
+
+.btn:disabled {
+    cursor: wait;
+    opacity: 0.72;
 }
 
 .btn-primary {
@@ -757,6 +799,7 @@ footer {
     .card { padding: 1.5rem; border-radius: 12px; }
     .card h2 { font-size: 1.3rem; }
     .params-grid { grid-template-columns: repeat(2, 1fr); }
+    .demo-buttons { grid-template-columns: 1fr; }
     .radio-group { flex-direction: column; gap: 0.6rem; }
     .info-bar { gap: 0.8rem; font-size: 0.85rem; }
     .db-list { overflow-x: auto; }

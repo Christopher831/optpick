@@ -32,6 +32,16 @@
             </div>
         </div>
 
+        <div class="demo-section">
+            <h3 data-i18n="demo-title">Quick Demo Runs</h3>
+            <div class="demo-buttons">
+                <button type="button" class="btn btn-demo" data-i18n="demo-ex3" onclick="runDemo(45, 8, 6, 4, 4)">PDF Ex. 3 · n=8, k=6, j=4, s=4</button>
+                <button type="button" class="btn btn-demo" data-i18n="demo-ex4" onclick="runDemo(45, 9, 6, 4, 4)">PDF Ex. 4 · n=9, k=6, j=4, s=4</button>
+                <button type="button" class="btn btn-demo" data-i18n="demo-ex8" onclick="runDemo(45, 10, 6, 6, 4)">PDF Ex. 8 · n=10, k=6, j=6, s=4</button>
+                <button type="button" class="btn btn-demo" data-i18n="demo-ex9" onclick="runDemo(45, 12, 6, 6, 4)">PDF Ex. 9 · n=12, k=6, j=6, s=4</button>
+            </div>
+        </div>
+
         <div class="mode-section">
             <h3 data-i18n="mode-title">Sample Selection Mode</h3>
             <div class="radio-group">
@@ -52,19 +62,52 @@
         </div>
 
         <div class="actions">
-            <button type="submit" class="btn btn-primary" data-i18n="btn-execute">Execute</button>
+            <button type="submit" id="executeBtn" class="btn btn-primary" data-i18n="btn-execute">Execute</button>
             <button type="reset" class="btn btn-secondary" data-i18n="btn-clear" onclick="setTimeout(toggleManual, 0)">Clear</button>
         </div>
     </form>
 </div>
 
 <script>
+const mainForm = document.getElementById('mainForm');
+let isSubmitting = false;
+
 function toggleManual() {
     const manual = document.querySelector('input[name="mode"][value="manual"]');
     document.getElementById('manualInput').style.display = manual.checked ? 'block' : 'none';
 }
-document.getElementById('mainForm').addEventListener('submit', function() {
-    document.getElementById('langField').value = localStorage.getItem('lang') || 'en';
+
+function setValue(id, value) {
+    document.getElementById(id).value = value;
+}
+
+function runDemo(m, n, k, j, s) {
+    setValue('m', m);
+    setValue('n', n);
+    setValue('k', k);
+    setValue('j', j);
+    setValue('s', s);
+    document.querySelector('input[name="mode"][value="manual"]').checked = true;
+    document.querySelector('input[name="mode"][value="random"]').checked = false;
+    setValue('manual_samples', Array.from({ length: n }, (_, index) => index + 1).join(', '));
+    toggleManual();
+    mainForm.requestSubmit();
+}
+
+mainForm.addEventListener('submit', function(event) {
+    if (isSubmitting) {
+        event.preventDefault();
+        return;
+    }
+
+    const lang = localStorage.getItem('lang') || 'en';
+    document.getElementById('langField').value = lang;
+    isSubmitting = true;
+    mainForm.setAttribute('aria-busy', 'true');
+
+    const executeBtn = document.getElementById('executeBtn');
+    executeBtn.disabled = true;
+    executeBtn.textContent = lang === 'zh' ? '计算中...' : 'Computing...';
 });
 </script>
 {% endblock %}

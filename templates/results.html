@@ -32,7 +32,7 @@
 
     <div class="results-display">
         <h3>
-            <span data-i18n="optimal-groups" data-i18n-num="{{ num_groups }}" data-i18n-k="{{ k }}">{{ num_groups }} optimal groups of {{ k }}</span>
+            <span data-i18n="optimal-groups" data-i18n-num="{{ num_groups }}" data-i18n-k="{{ k }}">{{ num_groups }} optimal / near-optimal groups of {{ k }}</span>
             {% if historical_best is defined and historical_best is not none %}
                 {% if num_groups < historical_best %}
                 <span class="comparison-badge new-best" data-i18n="new-best">New best!</span>
